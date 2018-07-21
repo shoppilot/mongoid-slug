@@ -43,7 +43,8 @@ RSpec.configure do |c|
 
   c.before :all do
     Mongoid.logger.level = Logger::INFO
-    if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6?
+    if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6? ||
+      Mongoid::Compatibility::Version.mongoid7?
       Mongo::Logger.logger.level = Logger::INFO
     end
   end

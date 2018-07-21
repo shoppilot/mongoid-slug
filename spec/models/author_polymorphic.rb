@@ -4,7 +4,7 @@ class AuthorPolymorphic
   field :first_name
   field :last_name
   slug :first_name, :last_name, scope: :book_polymorphic
-  if Mongoid::Compatibility::Version.mongoid6?
+  if Mongoid::Compatibility::Version.mongoid6? || Mongoid::Compatibility::Version.mongoid7?
     belongs_to :book_polymorphic, required: false
   else
     belongs_to :book_polymorphic

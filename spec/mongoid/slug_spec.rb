@@ -596,7 +596,8 @@ module Mongoid
     end
 
     context 'with a value exceeding mongodb max index key' do
-      if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6?
+      if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6? ||
+        Mongoid::Compatibility::Version.mongoid7?
         it 'errors with a model without a max length' do
           expect do
             Book.create!(title: 't' * 1025)
@@ -736,7 +737,8 @@ module Mongoid
 
       context 'when called on an existing record with no slug' do
         let!(:book_no_slug) do
-          if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6?
+          if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6? ||
+            Mongoid::Compatibility::Version.mongoid7?
             Book.collection.insert_one(title: 'Proust and Signs')
           else
             Book.collection.insert(title: 'Proust and Signs')
@@ -796,7 +798,8 @@ module Mongoid
         it 'ensures uniqueness' do
           book1 = Book.create(title: 'A Thousand Plateaus', slugs: ['not-what-you-expected'])
           expect(book1.to_param).to eql 'not-what-you-expected'
-          if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6?
+          if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6? ||
+            Mongoid::Compatibility::Version.mongoid7?
             expect do
               Book.create(title: 'A Thousand Plateaus', slugs: ['not-what-you-expected'])
             end.to raise_error Mongo::Error::OperationFailure, /duplicate/
@@ -825,7 +828,8 @@ module Mongoid
           Book.create(title: 'Sleepyhead')
           book2 = Book.create(title: 'A Thousand Plateaus')
           book2.slugs.push 'sleepyhead'
-          if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6?
+          if Mongoid::Compatibility::Version.mongoid5? || Mongoid::Compatibility::Version.mongoid6? ||
+            Mongoid::Compatibility::Version.mongoid7?
             expect do
               book2.save
             end.to raise_error Mongo::Error::OperationFailure, /duplicate/
